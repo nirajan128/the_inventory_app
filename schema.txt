@@ -1,0 +1,30 @@
+CREATE TABLE Users (
+  user_id SERIAL PRIMARY KEY,
+  user_name VARCHAR(300) UNIQUE NOTNULL,
+  user_email VARCHAR(300) UNIQUE NOTNULL,
+  password VARCHAR(100)
+);
+
+Schema for Suppliers
+CREATE TABLE suppliers (
+    supplier_id SERIAL PRIMARY KEY,
+    supplier_name VARCHAR(100) NOT NULL,
+    contact_info VARCHAR(100),
+	user_id INT NOT NULL,
+	FOREIGN KEY (user_id) REFERENCES users (user_id) ON DELETE CASCADE
+);
+
+Schema for items
+CREATE TABLE products (
+    item_id SERIAL PRIMARY KEY,
+    item_name VARCHAR(200) NOT NULL,
+    supplier_id INT NOT NULL,
+	user_id INT NOT NUll,
+    FOREIGN KEY (supplier_id) REFERENCES Suppliers (supplier_id) ON DELETE CASCADE,
+	FOREIGN KEY (user_id) REFERENCES users (user_id) ON DELETE CASCADE
+);
+
+Schema for JOINING Suppliers and items
+SELECT i.item_id, i.item_name, s.supplier_name, s.contact_info
+FROM products i
+JOIN Suppliers s ON i.supplier_id = s.supplier_id;
