@@ -6,7 +6,7 @@ import bodyParser  from "body-parser";
 
 
 //variables
-let user_id;
+let userName;
 let supplier_id;
 
 //1.Get the environment variables from .env file
@@ -38,8 +38,8 @@ await db.connect();
 //sample
 app.get("/", async(req,res) => {
     try {
-        const userData =await db.query("SELECT * from users");
-        const supplierData = await db.query("SELECT supplier_id, supplier_name FROM suppliers");
+        const userData =await db.query("SELECT * from users"); //user data
+        const supplierData = await db.query("SELECT supplier_id, supplier_name FROM suppliers"); //supplierData
         const query = `
         SELECT 
         products.item_id,
@@ -57,19 +57,20 @@ app.get("/", async(req,res) => {
       INNER JOIN 
         Available_Stock ON products.item_id = Available_Stock.item_id
       INNER JOIN
-        to_order ON products.item_id = to_order.item_id;`;
+        to_order ON products.item_id = to_order.item_id;`;  //quer to display all data
 
         const allData = await db.query(query);
 
+        //rows of data
         const suppliers = supplierData.rows;
         const userDataRows = userData.rows;
         const allDataRows = allData.rows;
 
-        user_id = userDataRows.map(user => user.user_id);
+        userName = userDataRows.map(user => user.user_name);
         supplier_id = suppliers.map(supplier => supplier.supplier_id);
 
         res.render("index.ejs",{
-            users: user_id , // Correct property name
+            users: userName, // Correct property name
             suppliers: suppliers,
             allData : allDataRows
         })
