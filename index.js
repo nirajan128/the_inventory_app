@@ -7,6 +7,7 @@ import bodyParser  from "body-parser";
 
 //variables
 let userName;
+let user_id;
 let supplier_id;
 
 //1.Get the environment variables from .env file
@@ -65,8 +66,9 @@ app.get("/", async(req,res) => {
         const suppliers = supplierData.rows;
         const userDataRows = userData.rows;
         const allDataRows = allData.rows;
-
+        
         userName = userDataRows.map(user => user.user_name);
+        user_id = userDataRows.map(user => user.user_id);
         supplier_id = suppliers.map(supplier => supplier.supplier_id);
 
         res.render("index.ejs",{
