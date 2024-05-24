@@ -2,7 +2,7 @@ import express from "express"
 import pg from "pg";
 import dotenv from "dotenv";
 import bodyParser  from "body-parser";
-
+import cors from"cors";
 
 
 //variables
@@ -21,14 +21,11 @@ const PORT =  process.env.PORT || 3000;
 //middleware
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
+app.use(cors());
 
 //4.Connect with the database
 const db = new pg.Client({
-    user: process.env.DB_USER,
-    host: process.env.DB_HOST,
-    database: process.env.DB_NAME,
-    password: process.env.DB_PASSWORD,
-    port: process.env.DB_PORT,
+    connectionString: process.env.DATABASE_URL,
     ssl: {
         rejectUnauthorized: false, //disables certificate validation
       },
